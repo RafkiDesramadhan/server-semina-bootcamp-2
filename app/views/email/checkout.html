@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: sans-serif;
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      .head {
+        float: right;
+        font-weight: bold;
+      }
+
+      .head p:nth-child(1) {
+        color: blueviolet;
+        text-decoration: underline;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .head p:nth-child(2) {
+        margin-bottom: 1.5rem;
+      }
+
+      .sub-head {
+        clear: both;
+        margin-bottom: 2rem;
+      }
+
+      footer {
+        text-align: center;
+        font-size: 1.5rem;
+      }
+
+      @media screen and (max-width: 600px) {
+        .head {
+          float: left;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <section class="header">
+        <div class="head">
+          <p>Invoice</p>
+          <p>#{{ _id }}</p>
+        </div>
+        <div class="sub-head">
+          <table>
+            <tr>
+              <td>Name</td>
+              <td>:</td>
+              <td>
+                {{ personalDetail.firstName }} {{ personalDetail.lastName }}
+              </td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>:</td>
+              <td>{{ date }}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>:</td>
+              <td>{{ status }}</td>
+            </tr>
+            <tr>
+              <td>Payment</td>
+              <td>:</td>
+              <td>#{{ payment }}</td>
+            </tr>
+            <tr>
+              <td>Event</td>
+              <td>:</td>
+              <td>#{{ event }}</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+      <footer>Thank's For Buy Ticket For Event</footer>
+    </div>
+  </body>
+</html>
