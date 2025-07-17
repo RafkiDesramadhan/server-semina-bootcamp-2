@@ -1,0 +1,2 @@
+code belumm solved : 
+1. Code error masih angka 500 pada saat kategori duplikat pada bad request
