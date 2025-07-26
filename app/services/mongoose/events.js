@@ -7,7 +7,7 @@ const { NotFoundError, BadRequestError } = require("../../errors");
 
 const getAllEvents = async (req) => {
   const { keyword, category, talent } = req.query;
-  let condition = {};
+  let condition = { organizer: req.user.organizer };
 
   if (keyword) {
     condition = { ...condition, title: { $regex: keyword, $options: "i" } };
@@ -71,6 +71,7 @@ const createEvents = async (req) => {
     image,
     category,
     talent,
+    organizer: req.user.organizer,
   });
 
   return result;
@@ -79,7 +80,10 @@ const createEvents = async (req) => {
 const getOneEvents = async (req) => {
   const { id } = req.params;
 
-  const result = await Events.findOne({ _id: id })
+  const result = await Events.findOne({
+    _id: id,
+    organizer: req.user.organizer,
+  })
     .populate({ path: "image", select: "_id name" })
     .populate({
       path: "category",
@@ -118,6 +122,7 @@ const updateEvents = async (req) => {
 
   const check = await Events.findOne({
     title,
+    organizer: req.user.organizer,
     _id: { $ne: id },
   });
 
@@ -137,6 +142,7 @@ const updateEvents = async (req) => {
       image,
       category,
       talent,
+      organizer: req.user.organizer,
     },
     { new: true, runValidators: true }
   );
@@ -151,6 +157,7 @@ const deleteEvents = async (req) => {
 
   const result = await Events.findOne({
     _id: id,
+    organizer: req.user.organizer,
   });
 
   if (!result) throw new NotFoundError(`Tidak ada pembicara dengan id : ${id}`);
