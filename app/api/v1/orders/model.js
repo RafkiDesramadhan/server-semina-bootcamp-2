@@ -11,7 +11,7 @@ const orderDetailSchema = new mongoose.Schema({
       default: 0,
     },
     sumTicket: {
-      ticket: Number,
+      type: Number,
       required: true,
     },
   },
@@ -71,3 +71,5 @@ const orderSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+module.exports = mongoose.model("Order", orderSchema);

@@ -4,6 +4,12 @@ const getAllOrders = async (req) => {
   const { limit = 10, page = 1, startDate, endDate } = req.query;
   let condition = {};
 
+  let match = {};
+
+  if (req.user.role !== "owner") {
+    match = { _id: req.user.organizer };
+  }
+
   if (startDate && endDate) {
     const start = new Date(startDate);
     start.setHours(0, 0, 0);
