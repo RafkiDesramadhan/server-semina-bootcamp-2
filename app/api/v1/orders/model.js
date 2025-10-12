@@ -10,10 +10,10 @@ const orderDetailSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
-    sumTicket: {
-      type: Number,
-      required: true,
-    },
+  },
+  sumTicket: {
+    type: Number,
+    required: true,
   },
 });
 
@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema(
       lastName: {
         type: String,
         required: [true, "Please provide lastName"],
-        minglength: 3,
+        minlength: 3,
         maxlength: 50,
       },
       email: {
@@ -48,6 +48,7 @@ const orderSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: ["pending", "paid"],
+      default: "pending",
     },
     totalPay: {
       type: Number,
@@ -67,6 +68,52 @@ const orderSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "Event",
       required: true,
+    },
+    historyEvent: {
+      title: {
+        type: String,
+        required: [true, "Judul harus diisi"],
+        minlength: 3,
+        maxlength: 50,
+      },
+      date: {
+        type: Date,
+        required: [true, "Tanggal dan waktu harus diisi"],
+      },
+      about: {
+        type: String,
+      },
+      tagline: {
+        type: String,
+        required: [true, "Tagline harus diisi"],
+      },
+      keyPoint: {
+        type: [String],
+      },
+      venueName: {
+        type: String,
+        required: [true, "Tempat acara harus diisi"],
+      },
+      image: {
+        type: mongoose.Types.ObjectId,
+        ref: "Image",
+        required: true,
+      },
+      category: {
+        type: mongoose.Types.ObjectId,
+        ref: "Category",
+        required: true,
+      },
+      talent: {
+        type: mongoose.Types.ObjectId,
+        ref: "Talent",
+        required: true,
+      },
+      organizer: {
+        type: mongoose.Types.ObjectId,
+        ref: "Organizer",
+        required: true,
+      },
     },
   },
   { timestamps: true }
