@@ -11,7 +11,7 @@ const createTokenUser = (user) => {
 const createTokenParticipant = (participant) => {
   return {
     lastName: participant.lastName,
-    pariticipantID: participant._id,
+    pariticipantId: participant._id,
     firstName: participant.firstName,
     email: participant.email,
   };

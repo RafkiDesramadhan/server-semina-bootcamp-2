@@ -44,7 +44,7 @@ const authenticateParticipant = async (req, res, next) => {
     let token;
     const authHeader = req.headers.authorization;
 
-    if (authHheader && authHeader.startsWith("Bearer")) {
+    if (authHeader && authHeader.startsWith("Bearer")) {
       token = authHeader.split(" ")[1];
     }
 
@@ -54,11 +54,11 @@ const authenticateParticipant = async (req, res, next) => {
 
     const payload = isTokenValid({ token });
 
-    req.user = {
+    req.participant = {
       email: payload.email,
       lastName: payload.lastName,
       firstName: payload.firstName,
-      id: payload.userId,
+      id: payload.pariticipantId,
     };
 
     next();
