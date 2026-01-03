@@ -1,2 +1,3 @@
 code belumm solved : 
 1. Code error masih angka 500 pada saat kategori duplikat pada bad request
+2. Pada saat melakukan sign up pada participant, kode tidak bisa dikirimkan ke email melalui nodemailer

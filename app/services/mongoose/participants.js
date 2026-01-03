@@ -4,7 +4,7 @@ const {
   NotFoundError,
   UnauthorizedError,
 } = require("../../errors");
-
+const { createTokenParticipant, createJWT } = require("../../utils");
 const { otpMail } = require("../mail");
 
 const signupParticipant = async (req) => {
@@ -40,6 +40,89 @@ const signupParticipant = async (req) => {
   }
 };
 
+const activateParticipant = async (req) => {
+  const { otp, email } = req.body;
+  const check = await Participant.findOne({
+    email,
+  });
+
+  if (!check) throw new NotFoundError(`Participant belum terdaftar`);
+
+  if (check && check.otp !== otp) throw new BadRequestError("Kode OTP Salah!");
+
+  const result = await Participant.findByIdAndUpdate(
+    check._id,
+    {
+      status: "aktif",
+    },
+    {
+      new: true,
+    }
+  );
+
+  delete result._doc.password;
+  delete result._doc.otp;
+
+  return result;
+};
+
+const signInParticipant = async (req) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    throw new BadRequestError("Please provide email and password");
+  }
+
+  const result = await Participant.findOne({ email });
+
+  if (!result) {
+    throw new UnauthorizedError("Invalid Credentials");
+  }
+
+  if (result.status === "tidak aktif") {
+    throw new UnauthorizedError("Akun anda belum aktif");
+  }
+
+  const isPasswordCorrect = await result.comparePassword(password);
+
+  if (!isPasswordCorrect) {
+    throw new UnauthorizedError("Invalid Credentials");
+  }
+
+  const token = createJWT({ payload: createTokenParticipant(result) });
+
+  return token;
+};
+
+const getAllEvents = async (req) => {
+  const result = await Participant.events
+    .find({ statusEvent: "Published" })
+    .populate("category")
+    .populate("image")
+    .select("_id title date tickets venueName");
+
+  return result;
+};
+
+const getOneEvent = async (req) => {
+  const result = await Events.findOne({ _id: req.params.id })
+    .populate("category")
+    .populate("talent")
+    .populate("image");
+
+  return result;
+};
+
+const getAllOrders = async (req) => {
+  const result = await Orders.find({ pariticipant: req.user.id });
+  return result;
+};
+
 module.exports = {
   signupParticipant,
+  activateParticipant,
+  signInParticipant,
+  getAllEvents,
+  getOneEvent,
+  getAllOrders,
 };
