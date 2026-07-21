@@ -53,7 +53,7 @@ const updateCategories = async (req) => {
   const result = await Categories.findOneAndUpdate(
     { _id: id },
     { name },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   );
 
   if (!result) throw new NotFoundError(`Tidak ada kategori dengan id : ${id}`);
